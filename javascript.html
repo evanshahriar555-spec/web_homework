@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript CRUD</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #333; color: white; }
+        .form-container { background: #eee; padding: 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <nav>
+    <a href="index.html">Home</a>
+    <a href="javascript.html">javascript</a>
+    <a href="oojs.html">oojs</a>
+    <a href="react.html">react</a>
+    <a href="fetchapi.html">fetchapi</a>
+    <a href="axios.html">axios</a>  
+    <a href="spa.html">spa</a>  
+    
+</nav>
+    <h2>Student Data Management (JS Array CRUD)</h2>
+    
+    <div class="form-container">
+        <input type="number" id="sId" placeholder="Student ID">
+        <input type="number" id="sMark" placeholder="Mark (1-5)">
+        <input type="text" id="sType" placeholder="Assessment Type">
+        <button onclick="addStudent()">Add Student</button>
+    </div>
+
+    <table id="studentTable">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Mark</th>
+                <th>Type</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+
+    <script>
+        
+        let students = [
+            { id: 139, mark: 5, type: 'Oral Assessment' },
+            { id: 388, mark: 1, type: 'Lesson Work' }
+        ];
+
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            students.forEach((s, index) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${s.id}</td>
+                        <td>${s.mark}</td>
+                        <td>${s.type}</td>
+                        <td><button onclick="deleteStudent(${index})">Delete</button></td>
+                    </tr>`;
+            });
+        }
+
+        function addStudent() {
+            const id = document.getElementById('sId').value;
+            const mark = document.getElementById('sMark').value;
+            const type = document.getElementById('sType').value;
+            if(id && mark && type) {
+                students.push({ id: parseInt(id), mark: parseInt(mark), type: type });
+                renderTable();
+            }
+        }
+
+        function deleteStudent(index) {
+            students.splice(index, 1);
+            renderTable();
+        }
+
+        renderTable();
+    </script>
+</body>
+</html>

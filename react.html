@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>React CRUD - Student Records</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .card { border: 1px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 8px; }
+        button { background: #e74c3c; color: white; border: none; padding: 5px 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <nav>
+    <a href="index.html">Home</a>
+    <a href="javascript.html">javascript</a>
+    <a href="oojs.html">oojs</a>
+    <a href="react.html">react</a>
+    <a href="fetchapi.html">fetchapi</a>
+    <a href="axios.html">axios</a>  
+    <a href="spa.html">spa</a>  
+    
+</nav>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        function StudentApp() {
+            const [students, setStudents] = React.useState([
+                { id: 221, type: 'Topic Test', mark: 5 }, 
+                { id: 251, type: 'Quiz', mark: 4 }
+            ]);
+
+            const deleteStudent = (id) => {
+                setStudents(students.filter(s => s.id !== id));
+            };
+
+            return (
+                <div>
+                    <h1>React Student Manager</h1>
+                    {students.map(s => (
+                        <div key={s.id} className="card">
+                            <p><strong>Student ID:</strong> {s.id}</p>
+                            <p><strong>Assessment:</strong> {s.type}</p>
+                            <p><strong>Mark:</strong> {s.mark}</p>
+                            <button onClick={() => deleteStudent(s.id)}>Delete</button>
+                        </div>
+                    ))}
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<StudentApp />);
+    </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task 7: Object Oriented JS</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; padding: 40px; background: #f4f7f6; color: #333; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .result-box { margin-top: 20px; padding: 15px; border-left: 5px solid #3498db; background: #eef7ff; display: none; }
+        input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
+        button { width: 100%; padding: 12px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #2980b9; }
+    </style>
+</head>
+
+<body>
+<nav>
+    <a href="index.html">Home</a>
+    <a href="javascript.html">javascript</a>
+    <a href="oojs.html">oojs</a>
+    <a href="react.html">react</a>
+    <a href="fetchapi.html">fetchapi</a>
+    <a href="axios.html">axios</a>  
+    <a href="spa.html">spa</a>  
+    
+</nav>
+
+
+
+
+
+<div class="container">
+    <h2>OOJS Student Performance</h2>
+    <p>Using classes to analyze records from Sep 2010</p>
+    
+    <label>Student ID:</label>
+    <input type="number" id="sid" placeholder="e.g. 139">
+    
+    <label>Mark (1-5):</label>
+    <input type="number" id="mark" min="1" max="5" placeholder="e.g. 5">
+    
+    <label>Assessment Type:</label>
+    <select id="type">
+        <option value="Oral Assessment">Oral Assessment</option>
+        <option value="Lesson Work">Lesson Work</option>
+        <option value="Topic Test">Topic Test</option>
+    </select>
+    
+    <button onclick="analyzePerformance()">Analyze Result</button>
+
+    <div id="result" class="result-box"></div>
+</div>
+
+<script>
+    
+    class StudentRecord {
+        constructor(id, mark, type) {
+            this.id = id;
+            this.mark = mark;
+            this.type = type;
+        }
+
+        
+        getGradeStatus() {
+            if (this.mark >= 3) {
+                return `<span style="color: green;">Passed (Successful Assessment)</span>`;
+            } else {
+                return `<span style="color: red;">Failed (Improvement Needed)</span>`;
+            }
+        }
+
+      
+        display() {
+            return `<strong>Student ID:</strong> ${this.id}<br>
+                    <strong>Assessment:</strong> ${this.type}<br>
+                    <strong>Mark:</strong> ${this.mark}<br>
+                    <strong>Status:</strong> ${this.getGradeStatus()}`;
+        }
+    }
+
+    function analyzePerformance() {
+        const id = document.getElementById('sid').value;
+        const mark = document.getElementById('mark').value;
+        const type = document.getElementById('type').value;
+
+        if(!id || !mark) {
+            alert("Please fill all fields");
+            return;
+        }
+
+       
+        const currentStudent = new StudentRecord(id, mark, type);
+
+        const resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = currentStudent.display();
+    }
+</script>
+
+</body>
+</html>

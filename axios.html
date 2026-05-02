@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task 6: Axios with React</title>
+    <!-- React & Axios CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 30px; background-color: #f9f9f9; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #3498db; color: white; }
+        .loading { color: #f39c12; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <nav>
+    <a href="index.html">Home</a>
+    <a href="javascript.html">javascript</a>
+    <a href="oojs.html">oojs.</a>
+    <a href="react.html">react</a>
+    <a href="fetchapi.html">fetchapi</a>
+    <a href="axios.html">axios</a>  
+    <a href="spa.html">spa</a>  
+    
+</nav>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function StudentList() {
+            const [students, setStudents] = useState([]);
+            const [loading, setLoading] = useState(true);
+
+            
+            useEffect(() => {
+                axios.get('data.php') 
+                    .then(response => {
+                        setStudents(response.data);
+                        setLoading(false);
+                    })
+                    .catch(error => {
+                        console.error("Error fetching data with Axios:", error);
+                        setLoading(false);
+                    });
+            }, []);
+
+            if (loading) return <p className="loading">Loading records from September 2010...</p>;
+
+            return (
+                <div className="container">
+                    <h2>Task 6: React Student List (using Axios)</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Assessment Date</th>
+                                <th>Mark (1-5)</th>
+                                <th>Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {students.map((student, index) => (
+                                <tr key={index}>
+                                    <td>{student.student_id}</td>
+                                    <td>{student.assessment_date}</td>
+                                    <td>{student.mark}</td>
+                                    <td>{student.assessment_type}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<StudentList />);
+    </script>
+</body>
+</html>
