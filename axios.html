@@ -8,7 +8,7 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    
+   
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 30px; background-color: #f9f9f9; }
         .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
@@ -27,22 +27,30 @@
     <a href="fetchapi.html">fetchapi</a>
     <a href="axios.html">axios</a>  
     <a href="spa.html">spa</a>  
-    
+   
 </nav>
     <div id="root"></div>
-
+ 
     <script type="text/babel">
         const { useState, useEffect } = React;
-
+ 
         function StudentList() {
             const [students, setStudents] = useState([]);
             const [loading, setLoading] = useState(true);
-
-            
+ 
+           
             useEffect(() => {
-                axios.get('data.php') 
+                axios.get('data.php')
                     .then(response => {
-                        setStudents(response.data);
+                        const payload = response.data;
+                        if (payload && payload.error) {
+                            console.error(payload.error);
+                            setStudents([]);
+                            setLoading(false);
+                            alert('Database error: ' + payload.error);
+                            return;
+                        }
+                        setStudents(Array.isArray(payload) ? payload : []);
                         setLoading(false);
                     })
                     .catch(error => {
@@ -50,9 +58,9 @@
                         setLoading(false);
                     });
             }, []);
-
+ 
             if (loading) return <p className="loading">Loading records from September 2010...</p>;
-
+ 
             return (
                 <div className="container">
                     <h2>Task 6: React Student List (using Axios)</h2>
@@ -79,9 +87,10 @@
                 </div>
             );
         }
-
+ 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<StudentList />);
     </script>
 </body>
 </html>
+ 
