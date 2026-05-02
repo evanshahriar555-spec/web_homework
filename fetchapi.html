@@ -20,11 +20,11 @@
     <a href="fetchapi.html">fetchapi</a>
     <a href="axios.html">axios</a>  
     <a href="spa.html">spa</a>  
-    
+   
 </nav>
     <h2>Task 5: Fetch API (September 2010 Records)</h2>
     <button onclick="loadData()">Load Data from Database</button>
-
+ 
     <table id="dataTable" style="display:none;">
         <thead>
             <tr>
@@ -36,17 +36,26 @@
         </thead>
         <tbody id="tableBody"></tbody>
     </table>
-
+ 
     <script>
         async function loadData() {
             try {
                
                 const response = await fetch('data.php');
                 const data = await response.json();
-
+ 
+                if (data.error) {
+                    alert('Database error: ' + data.error);
+                    return;
+                }
+                if (!Array.isArray(data)) {
+                    alert('Unexpected response from server.');
+                    return;
+                }
+ 
                 const tbody = document.getElementById('tableBody');
-                tbody.innerHTML = ''; 
-
+                tbody.innerHTML = '';
+ 
                 data.forEach(item => {
                     tbody.innerHTML += `
                         <tr>
@@ -56,7 +65,7 @@
                             <td>${item.assessment_type}</td>
                         </tr>`;
                 });
-
+ 
                 document.getElementById('dataTable').style.display = 'table';
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -66,3 +75,4 @@
     </script>
 </body>
 </html>
+ 
